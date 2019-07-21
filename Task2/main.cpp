@@ -8,21 +8,10 @@ int main()
 	Horse horse("Star", "Black", 5);
 
 	IDriveble* d = &car;
-	d->Go();
-	d->Stop();
-	d->UpSpeed(10);
-	d->DownSpeed(5);
 
-	d = &horse;
-	d->Go();
-	d->Stop();
-	d->UpSpeed(10);
-	d->DownSpeed(5);
-	d->DownSpeed(10);
-
-	//Driver driver("John");
-	//driver.SetVehicle(d);
-	//driver.TestDrive();
+	Driver driver("John");
+	driver.SetVehicle(d);
+	driver.TestDrive();
 
 	//cout<< ""
 	system("pause");

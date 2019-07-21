@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <Windows.h>
 using namespace std;
 __interface IDriveble
 {
@@ -13,11 +14,11 @@ __interface IDriveble
 class Car : public IDriveble
 {
 private:
-	const int MAX_SPEED = 300;
+	const int MAX_SPEED = 200;
 	string brand;
 	int speed;
 public:
-	Car(string brand = "Audi", int speed = 40) : brand(brand)
+	Car(string brand = "Audi", int speed = 100) : brand(brand)
 	{
 		SetSpeed(speed);
 	}
@@ -136,10 +137,44 @@ public:
 	{
 		if (vehicle != nullptr)
 		{
-			vehicle->Go();
-			vehicle->Stop();
-			vehicle->UpSpeed(10);
-			vehicle->DownSpeed(5);
+			int selection;
+			bool vehType = true;
+			do {
+				system("cls");
+				cout << "You are siting " << (vehType ? "int the car." : "on the horse.") << endl;
+				cout << "1 - Go.\n";
+				cout << "2 - Speed up.\n";
+				cout << "3 - Slow down.\n";
+				cout << "4 - Stop.\n";
+				cout << "5 - Change vehicle.\n";
+				cout << "0 - Exit.\n";
+				cout << "Your action: ";
+				cin >> selection;
+				switch (selection)
+				{
+				case 1:
+					vehicle->Go();
+					break;
+				case 2:
+					vehicle->UpSpeed(10);
+					break;
+				case 3:
+					vehicle->DownSpeed(10);
+					break;
+				case 4:
+					vehicle->Stop();
+					break;
+				case 5:
+					break;
+				case 0:
+					cout << "Have a nice day.\n";
+					break;
+				default:
+					cout << "Invalid input. Try again.\n";
+					system("pause");
+					break;
+				}
+			} while (selection != 0);
 		}
 	}
 };
