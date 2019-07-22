@@ -72,6 +72,10 @@ public:
 	{
 		SetSpeed(speed);
 	}
+	string GetType() const
+	{
+		return typeid(*this).name();
+	}
 	int GetSpeed() const
 	{
 		return speed;
@@ -123,6 +127,7 @@ class Driver
 {
 	string name;
 	IDriveble* vehicle;
+	vector<IDriveble*> garage;
 public:
 	Driver(string name, IDriveble* vehicle = nullptr) : name(name)
 	{
@@ -132,6 +137,12 @@ public:
 	{
 		if (vehicle != nullptr)
 			this->vehicle = vehicle;
+	}
+	void SetGarage(vector<IDriveble*>& garage)
+	{
+		if (garage.size() > 0)
+			this->garage = garage;
+		garage.clear();
 	}
 	void TestDrive() const
 	{

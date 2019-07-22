@@ -58,7 +58,7 @@ public:
 	void Print() const
 	{
 		Vehicle::Print();
-		cout << "Car\t" << "Doors: " << GetDoors() << endl;
+		cout << "Doors: " << GetDoors() << endl;
 	}
 };
 
@@ -66,20 +66,10 @@ class Ship : virtual public Vehicle
 {
 private:
 	int turbines;
-	int waterSpeed;
 public:
-	Ship(string brand, int speed, int waterSpeed, int turbines = 2) : Vehicle(brand, speed), waterSpeed(waterSpeed)
+	Ship(string brand, int speed, int turbines = 2) : Vehicle(brand, speed)
 	{
 		SetTurbines(turbines);
-	}
-	void SetWaterSpeed(int waterSpeed)
-	{
-		if (waterSpeed > 0)
-			this->waterSpeed = waterSpeed;
-	}
-	int GetWaterSpeed() const
-	{
-		return waterSpeed;
 	}
 	int GetTurbines() const
 	{
@@ -93,19 +83,19 @@ public:
 	void Print() const
 	{
 		Vehicle::Print();
-		cout << "Ship\t" << "Turbines: " << GetTurbines() << "\tWaterspeed: " << waterSpeed << endl;
+		cout << "Turbines: " << GetTurbines() << endl;
 	}
 };
 
 class Amphibia : public Car, public Ship
 {
 public:
-	Amphibia(string name, int speed, int waterspeed, int doors, int turbines) :
-		Vehicle(name, speed), Car(name, speed, doors), Ship(name, speed, waterspeed, turbines) {}
+	Amphibia(string name, int speed, int doors, int turbines) :
+		Vehicle(name, speed), Car(name, speed, doors), Ship(name, speed, turbines) {}
 	void Print() const
 	{
 		cout << "Amphibia:\n";
-		Vehicle::Print();
-		cout << "Doors: " << Car::GetDoors() << "\tTurbines: " << Ship::GetTurbines() << "\tWaterspeed: " << Ship::GetWaterSpeed() << endl;
+		cout << "Brand: " << GetBrand() << "\tSpeed: " << GetSpeed() << endl;
+		cout << "Doors: " << GetDoors() << "\tTurbines: " << GetTurbines() << endl;
 	}
 };
