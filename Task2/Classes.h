@@ -9,6 +9,7 @@ __interface IDriveble
 	void UpSpeed(int speed);
 	void DownSpeed(int speed);
 	void Stop();
+	void Info();
 };
 
 class Car : public IDriveble
@@ -22,13 +23,19 @@ public:
 	{
 		SetSpeed(speed);
 	}
+	string GetType() const
+	{
+		return typeid(*this).name();
+	}
 	int GetSpeed() const
 	{
 		return speed;
 	}
 	void SetSpeed(int speed)
 	{
-		if (speed >= 0)
+		if (speed > MAX_SPEED)
+			this->speed = MAX_SPEED;
+		else if (speed >= 0)
 			this->speed = speed;
 		else
 			this->speed = 0;
@@ -58,6 +65,10 @@ public:
 		SetSpeed(0);
 		cout << brand << "\tStoping. Speed: " << this->speed << endl;
 	}
+	void Info()
+	{
+		cout << GetType() << "\tBrand: " << brand << "\tMax speed: " << MAX_SPEED << endl;
+	}
 };
 
 class Horse : public IDriveble
@@ -82,10 +93,10 @@ public:
 	}
 	void SetSpeed(int speed)
 	{
-		if (speed >= 0)
-			this->speed = speed;
-		else if (speed > MAX_SPEED)
+		if (speed > MAX_SPEED)
 			this->speed = MAX_SPEED;
+		else if (speed >= 0)
+			this->speed = speed;
 		else
 			this->speed = 0;
 	}
@@ -121,31 +132,36 @@ public:
 		SetSpeed(0);
 		cout << name << "\t" << color << "\tStoping. Speed: " << this->speed << endl;
 	}
+	void Info()
+	{
+		cout << GetType() << "\tName: " << name << "\tColor: " << color << "\tMax speed: " << MAX_SPEED << endl;
+	}
 };
 
 class Driver
 {
 	string name;
 	IDriveble* vehicle;
-	vector<IDriveble*> garage;
+	vector<IDriveble*>& garage;
 public:
-	Driver(string name, IDriveble* vehicle = nullptr) : name(name)
+	Driver(string name, vector<IDriveble*>& garage, IDriveble* vehicle = nullptr) : name(name), garage(garage)
 	{
 		SetVehicle(vehicle);
+		//SetGarage(garage);
 	}
 	void SetVehicle(IDriveble* vehicle)
 	{
 		if (vehicle != nullptr)
 			this->vehicle = vehicle;
 	}
-	void SetGarage(vector<IDriveble*>& garage)
+	//void SetGarage(vector<IDriveble*>& garage)
+	//{
+	//	if (garage.size() > 0)
+	//		this->garage = garage;
+	//}
+	void TestDrive()
 	{
-		if (garage.size() > 0)
-			this->garage = garage;
-		garage.clear();
-	}
-	void TestDrive() const
-	{
+		SetVehicle(garage[0]);
 		if (vehicle != nullptr)
 		{
 			int selection;
@@ -176,6 +192,31 @@ public:
 					vehicle->Stop();
 					break;
 				case 5:
+					if (garage.size())
+					{
+						do
+						{
+							cout << "Choose vehicle to drive:\n";
+							for (int i = 0; i < garage.size(); i++)
+							{
+								cout << i + 1 << " - ";
+								garage[i]->Info();
+							}
+							cout << "Your selection: ";
+							cin >> selection;
+							if (selection - 1 < 0 || selection - 1 > garage.size())
+							{
+								cout << "Invalid input. Try again.\n";
+								system("pause");
+							}
+						} while (selection - 1 < 0 || selection - 1 > garage.size());
+						SetVehicle(garage[selection - 1]);
+					}
+					else
+					{
+						cout << "Garage is empty.\n";
+						system("pause");
+					}
 					break;
 				case 0:
 					cout << "Have a nice day.\n";
