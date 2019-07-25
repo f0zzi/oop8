@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-	Car car("Car", 30);
+	Car car("Audi", 30);
 	Horse horse("Star", "Black", 5);
 	vector<IDriveble*> vehicle;
 	vehicle.push_back(&car);

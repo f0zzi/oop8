@@ -10,6 +10,8 @@ __interface IDriveble
 	void DownSpeed(int speed);
 	void Stop();
 	void Info();
+	int GetSpeed() const;
+	string GetType() const;
 };
 
 class Car : public IDriveble
@@ -42,32 +44,41 @@ public:
 	}
 	void Go()
 	{
-		cout << brand << "\tI am going " << speed << " km/h." << endl;
+		if (speed == 0)
+			speed = 40;
+		cout << "\tGoing " << speed << " km/h." << endl;
 	}
 	void UpSpeed(int speed = 10)
 	{
-		if (speed > 0)
+		if (this->speed == MAX_SPEED)
+			cout << "\tRiding as fast as we can." << endl;
+		else if (speed > 0)
 		{
 			SetSpeed(this->speed + speed);
-			cout << brand << "\tSpeeding up. Speed: " << this->speed << endl;
+			cout << "\tSpeeding up. Speed: " << this->speed << endl;
 		}
 	}
 	void DownSpeed(int speed = 10)
 	{
 		if (speed > 0)
 		{
-			SetSpeed(this->speed - speed);
-			cout << brand << "\tSlowing down. Speed: " << this->speed << endl;
+			if (this->speed > speed)
+			{
+				SetSpeed(this->speed - speed);
+				cout << "\tSlowing down. Speed: " << this->speed << endl;
+			}
+			else
+				Stop();
 		}
 	}
 	void Stop()
 	{
 		SetSpeed(0);
-		cout << brand << "\tStoping. Speed: " << this->speed << endl;
+		cout << "\tStoping." << endl;
 	}
 	void Info()
 	{
-		cout << GetType() << "\tBrand: " << brand << "\tMax speed: " << MAX_SPEED << endl;
+		cout << "Car:" << "\tBrand: " << brand << "\tMax speed: " << MAX_SPEED << endl;
 	}
 };
 
@@ -103,15 +114,17 @@ public:
 	void Go()
 	{
 		if (speed == 0)
-			speed = 40;
-		cout << name << "\t" << color << "\tI am going " << speed << " km/h." << endl;
+			speed = 20;
+		cout << "\tGoing " << speed << " km/h." << endl;
 	}
 	void UpSpeed(int speed = 5)
 	{
-		if (speed > 0)
+		if (this->speed == MAX_SPEED)
+			cout << "\tRiding as fast as we can." << endl;
+		else if (speed > 0)
 		{
 			SetSpeed(this->speed + speed);
-			cout << name << "\t" << color << "\tSpeeding up. Speed: " << this->speed << endl;
+			cout << "\tSpeeding up. Speed: " << this->speed << endl;
 		}
 	}
 	void DownSpeed(int speed = 5)
@@ -121,7 +134,7 @@ public:
 			if (this->speed > speed)
 			{
 				SetSpeed(this->speed - speed);
-				cout << name << "\t" << color << "\tSlowing down. Speed: " << this->speed << endl;
+				cout << "\tSlowing down. Speed: " << this->speed << endl;
 			}
 			else
 				Stop();
@@ -130,11 +143,11 @@ public:
 	void Stop()
 	{
 		SetSpeed(0);
-		cout << name << "\t" << color << "\tStoping. Speed: " << this->speed << endl;
+		cout << "\tStoping." << endl;
 	}
 	void Info()
 	{
-		cout << GetType() << "\tName: " << name << "\tColor: " << color << "\tMax speed: " << MAX_SPEED << endl;
+		cout << "Horse:" << "\tName: " << name << "\tColor: " << color << "\tMax speed: " << MAX_SPEED << endl;
 	}
 };
 
@@ -147,28 +160,35 @@ public:
 	Driver(string name, vector<IDriveble*>& garage, IDriveble* vehicle = nullptr) : name(name), garage(garage)
 	{
 		SetVehicle(vehicle);
-		//SetGarage(garage);
 	}
 	void SetVehicle(IDriveble* vehicle)
 	{
 		if (vehicle != nullptr)
 			this->vehicle = vehicle;
 	}
-	//void SetGarage(vector<IDriveble*>& garage)
-	//{
-	//	if (garage.size() > 0)
-	//		this->garage = garage;
-	//}
+	void ShowStatus() const
+	{
+		if (vehicle != nullptr)
+		{
+			cout << "You are" << (vehicle->GetSpeed()? " ridind " : " siting ");
+			cout << (vehicle->GetType() == "class Car" ? "in the car" : "on the horse");
+			if (vehicle->GetSpeed())
+			{
+				cout << ". Speed: " << vehicle->GetSpeed() << endl;
+			}
+			else
+				cout << "." << endl;
+		}
+	}
 	void TestDrive()
 	{
 		SetVehicle(garage[0]);
 		if (vehicle != nullptr)
 		{
 			int selection;
-			bool vehType = true;
 			do {
 				system("cls");
-				cout << "You are siting " << (vehType ? "int the car." : "on the horse.") << endl;
+				ShowStatus();
 				cout << "1 - Go.\n";
 				cout << "2 - Speed up.\n";
 				cout << "3 - Slow down.\n";
@@ -223,9 +243,9 @@ public:
 					break;
 				default:
 					cout << "Invalid input. Try again.\n";
-					system("pause");
 					break;
 				}
+				system("pause");
 			} while (selection != 0);
 		}
 	}
