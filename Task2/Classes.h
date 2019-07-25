@@ -9,7 +9,7 @@ __interface IDriveble
 	void UpSpeed(int speed);
 	void DownSpeed(int speed);
 	void Stop();
-	void Info();
+	void Info() const;
 	int GetSpeed() const;
 	string GetType() const;
 };
@@ -76,7 +76,7 @@ public:
 		SetSpeed(0);
 		cout << "\tStoping." << endl;
 	}
-	void Info()
+	void Info() const
 	{
 		cout << "Car:" << "\tBrand: " << brand << "\tMax speed: " << MAX_SPEED << endl;
 	}
@@ -145,7 +145,7 @@ public:
 		SetSpeed(0);
 		cout << "\tStoping." << endl;
 	}
-	void Info()
+	void Info() const
 	{
 		cout << "Horse:" << "\tName: " << name << "\tColor: " << color << "\tMax speed: " << MAX_SPEED << endl;
 	}
