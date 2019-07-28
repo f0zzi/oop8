@@ -17,50 +17,44 @@ public:
 		if (name.size())
 			this->name = name;
 	}
+	string GetName() const
+	{
+		return name;
+	}
 	virtual void Sleep()
 	{
 		cout << name << " is sleeping." << endl;
 	}
 };
 
-class Daddy: public Grandpa
+class Daddy : public Grandpa
 {
-private:
-	string name;
 public:
-	Daddy(string name = "Daddy")
-	{
-		SetName(name);
-	}
+	Daddy(string name = "Daddy") : Grandpa(name) {}
 	virtual void Sleep()
 	{
-		cout << name << " is sleeping." << endl;
+		cout << GetName() << " is sleeping." << endl;
 	}
 	virtual void Walk()
 	{
-		cout << name << " is walking." << endl;
+		cout << GetName() << " is walking." << endl;
 	}
 };
 
 class Son : public Daddy
 {
-private:
-	string name;
 public:
-	Son(string name = "Son")
-	{
-		SetName(name);
-	}
+	Son(string name = "Son") : Daddy("Son") {}
 	virtual void Sleep()
 	{
-		cout << name << " is sleeping." << endl;
+		cout << GetName() << " is sleeping." << endl;
 	}
 	virtual void Walk()
 	{
-		cout << name << " is walking." << endl;
+		cout << GetName() << " is walking." << endl;
 	}
 	virtual void Play()
 	{
-		cout << name << " is palying." << endl; 
+		cout << GetName() << " is playing." << endl;
 	}
 };
